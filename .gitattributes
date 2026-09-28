@@ -1,0 +1,3 @@
+*.HC          text eol=lf
+*.golden      text eol=lf
+reference/**  -text

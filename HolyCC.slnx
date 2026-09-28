@@ -1,0 +1,47 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="HolyAST/HolyAST.vcxproj" />
+  <Project Path="HolyCC/HolyCC.vcxproj">
+    <BuildDependency Project="HolyLink/HolyLink.vcxproj" />
+    <BuildDependency Project="HolyRT/HolyRT.vcxproj" />
+  </Project>
+  <Project Path="HolyCDB/HolyCDB.vcxproj">
+    <BuildDependency Project="HolyDbgInfo/HolyDbgInfo.vcxproj" />
+  </Project>
+  <Project Path="HolyCore/HolyCore.vcxproj" />
+  <Project Path="HolyDbgInfo/HolyDbgInfo.vcxproj">
+    <BuildDependency Project="HolyCore/HolyCore.vcxproj" />
+  </Project>
+  <Project Path="HolyEdit/HolyEdit.vcxproj">
+    <BuildDependency Project="HolyLink/HolyLink.vcxproj" />
+    <BuildDependency Project="HolyRT/HolyRT.vcxproj" />
+  </Project>
+  <Project Path="HolyGen/HolyGen.vcxproj">
+    <BuildDependency Project="HolyDbgInfo/HolyDbgInfo.vcxproj" />
+    <BuildDependency Project="HolyIR/HolyIR.vcxproj" />
+  </Project>
+  <Project Path="HolyIR/HolyIR.vcxproj">
+    <BuildDependency Project="HolySema/HolySema.vcxproj" />
+  </Project>
+  <Project Path="HolyLex/HolyLex.vcxproj" />
+  <Project Path="HolyLink/HolyLink.vcxproj">
+    <BuildDependency Project="HolyGen/HolyGen.vcxproj" />
+  </Project>
+  <Project Path="HolyRT/HolyRT.vcxproj">
+    <BuildDependency Project="HolyCore/HolyCore.vcxproj" />
+  </Project>
+  <Project Path="HolySema/HolySema.vcxproj">
+    <BuildDependency Project="HolyAST/HolyAST.vcxproj" />
+  </Project>
+  <Project Path="HolyShell/HolyShell.vcxproj">
+    <BuildDependency Project="HolyLink/HolyLink.vcxproj" />
+    <BuildDependency Project="HolyRT/HolyRT.vcxproj" />
+  </Project>
+  <Project Path="HolyTest/HolyTest.vcxproj">
+    <BuildDependency Project="HolyLink/HolyLink.vcxproj" />
+    <BuildDependency Project="HolyRT/HolyRT.vcxproj" />
+  </Project>
+</Solution>
