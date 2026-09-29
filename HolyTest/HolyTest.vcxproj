@@ -146,6 +146,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Core\Test_Arena.cpp" />
     <ClCompile Include="Sources\Core\Test_Platform.cpp" />
     <ClCompile Include="Sources\Runner.cpp" />
   </ItemGroup>
