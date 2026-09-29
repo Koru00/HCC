@@ -3,6 +3,10 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+  </Folder>
   <Project Path="HolyAST/HolyAST.vcxproj" />
   <Project Path="HolyCC/HolyCC.vcxproj">
     <BuildDependency Project="HolyLink/HolyLink.vcxproj" />
