@@ -171,12 +171,14 @@
     <ClInclude Include="Include\HolyCore\HashMap.h" />
     <ClInclude Include="Include\HolyCore\HashMap.ipp" />
     <ClInclude Include="Include\HolyCore\Platform.h" />
+    <ClInclude Include="Include\HolyCore\StringInterner.h" />
     <ClInclude Include="Include\HolyCore\Vector.h" />
     <ClInclude Include="Include\HolyCore\Vector.ipp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\Arena.cpp" />
     <ClCompile Include="Sources\Platform_Win32.cpp" />
+    <ClCompile Include="Sources\StringInterner.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

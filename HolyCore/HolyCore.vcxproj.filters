@@ -33,12 +33,18 @@
     <ClInclude Include="Include\HolyCore\HashMap.ipp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\HolyCore\StringInterner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\Platform_Win32.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Arena.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\StringInterner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
