@@ -168,7 +168,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Include\HolyCore\Arena.h" />
+    <ClInclude Include="Include\HolyCore\HashMap.h" />
+    <ClInclude Include="Include\HolyCore\HashMap.ipp" />
     <ClInclude Include="Include\HolyCore\Platform.h" />
+    <ClInclude Include="Include\HolyCore\Vector.h" />
+    <ClInclude Include="Include\HolyCore\Vector.ipp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\Arena.cpp" />

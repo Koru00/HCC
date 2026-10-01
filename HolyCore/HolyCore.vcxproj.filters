@@ -21,6 +21,18 @@
     <ClInclude Include="Include\HolyCore\Arena.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\HolyCore\Vector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\HolyCore\HashMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\HolyCore\Vector.ipp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\HolyCore\HashMap.ipp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\Platform_Win32.cpp">

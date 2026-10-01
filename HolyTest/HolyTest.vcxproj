@@ -149,6 +149,8 @@
     <ClCompile Include="Sources\Core\Test_Arena.cpp" />
     <ClCompile Include="Sources\Core\Test_Platform.cpp" />
     <ClCompile Include="Sources\Runner.cpp" />
+    <ClCompile Include="Sources\Core\Test_HashMap.cpp" />
+    <ClCompile Include="Sources\Core\Test_Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HolyLink\HolyLink.vcxproj">

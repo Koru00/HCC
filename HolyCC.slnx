@@ -7,44 +7,44 @@
     <File Path=".gitattributes" />
     <File Path=".gitignore" />
   </Folder>
-  <Project Path="HolyAST/HolyAST.vcxproj" />
-  <Project Path="HolyCC/HolyCC.vcxproj">
+  <Project Path="HolyAST/HolyAST.vcxproj" Id="f79525d0-4c53-471c-8b18-ef5c44f311ad" />
+  <Project Path="HolyCC/HolyCC.vcxproj" Id="de22d79b-ed6a-4e62-9753-eda1eeb90300">
     <BuildDependency Project="HolyLink/HolyLink.vcxproj" />
     <BuildDependency Project="HolyRT/HolyRT.vcxproj" />
   </Project>
-  <Project Path="HolyCDB/HolyCDB.vcxproj">
+  <Project Path="HolyCDB/HolyCDB.vcxproj" Id="ca381a8a-6b41-43fd-89a3-ec94017497be">
     <BuildDependency Project="HolyDbgInfo/HolyDbgInfo.vcxproj" />
   </Project>
-  <Project Path="HolyCore/HolyCore.vcxproj" />
-  <Project Path="HolyDbgInfo/HolyDbgInfo.vcxproj">
+  <Project Path="HolyCore/HolyCore.vcxproj" Id="f054f43b-cf92-4f28-89d7-a52943e02197" />
+  <Project Path="HolyDbgInfo/HolyDbgInfo.vcxproj" Id="2efea549-ccf7-4d0f-9f95-21276b834112">
     <BuildDependency Project="HolyCore/HolyCore.vcxproj" />
   </Project>
-  <Project Path="HolyEdit/HolyEdit.vcxproj">
+  <Project Path="HolyEdit/HolyEdit.vcxproj" Id="dea68bfe-a53d-42fa-89cf-afbcd7967fe2">
     <BuildDependency Project="HolyLink/HolyLink.vcxproj" />
     <BuildDependency Project="HolyRT/HolyRT.vcxproj" />
   </Project>
-  <Project Path="HolyGen/HolyGen.vcxproj">
+  <Project Path="HolyGen/HolyGen.vcxproj" Id="39921769-0645-4cd6-bc79-8a5ccaa87200">
     <BuildDependency Project="HolyDbgInfo/HolyDbgInfo.vcxproj" />
     <BuildDependency Project="HolyIR/HolyIR.vcxproj" />
   </Project>
-  <Project Path="HolyIR/HolyIR.vcxproj">
+  <Project Path="HolyIR/HolyIR.vcxproj" Id="5f2a946f-60a1-4c18-b526-1ae161d138be">
     <BuildDependency Project="HolySema/HolySema.vcxproj" />
   </Project>
-  <Project Path="HolyLex/HolyLex.vcxproj" />
-  <Project Path="HolyLink/HolyLink.vcxproj">
+  <Project Path="HolyLex/HolyLex.vcxproj" Id="803ecb70-d480-469b-b7ec-d2427184688a" />
+  <Project Path="HolyLink/HolyLink.vcxproj" Id="50157142-9848-4569-aeb7-e2ea0d17e365">
     <BuildDependency Project="HolyGen/HolyGen.vcxproj" />
   </Project>
-  <Project Path="HolyRT/HolyRT.vcxproj">
+  <Project Path="HolyRT/HolyRT.vcxproj" Id="fd56362e-a0f0-439d-b90e-f84e528c410b">
     <BuildDependency Project="HolyCore/HolyCore.vcxproj" />
   </Project>
-  <Project Path="HolySema/HolySema.vcxproj">
+  <Project Path="HolySema/HolySema.vcxproj" Id="0b3c6bff-e955-4a01-bcf4-4ff2f5e6bdb3">
     <BuildDependency Project="HolyAST/HolyAST.vcxproj" />
   </Project>
-  <Project Path="HolyShell/HolyShell.vcxproj">
+  <Project Path="HolyShell/HolyShell.vcxproj" Id="03b258d1-6266-403e-8532-5f57aaf46abb">
     <BuildDependency Project="HolyLink/HolyLink.vcxproj" />
     <BuildDependency Project="HolyRT/HolyRT.vcxproj" />
   </Project>
-  <Project Path="HolyTest/HolyTest.vcxproj">
+  <Project Path="HolyTest/HolyTest.vcxproj" Id="8cd8498e-0bd1-45fa-827d-ca609253f591">
     <BuildDependency Project="HolyLink/HolyLink.vcxproj" />
     <BuildDependency Project="HolyRT/HolyRT.vcxproj" />
   </Project>

@@ -14,7 +14,10 @@ namespace {
 	}
 
 	size_t RoundUp(size_t value, size_t multipleOfPow2) {
-		assert(std::has_single_bit(multipleOfPow2) && "multipleOfPow2 is not a pow of 2");
+		assert(
+			multipleOfPow2 != 0 &&
+			(multipleOfPow2 & (multipleOfPow2 - 1)) == 0
+		);
 		return (value + multipleOfPow2 - 1) & ~(multipleOfPow2 - 1);
 	}
 }
@@ -56,7 +59,8 @@ namespace holy::core {
 	}
 
 	std::string_view Arena::CopyString(std::string_view s) {
-		char* p = static_cast<char*>(Allocate(s.size() + 1, 1));
+		size_t sizeBytes = s.size() + 1;
+		char* p = static_cast<char*>(Allocate(sizeBytes, 1));
 		std::memcpy(p, s.data(), s.size());
 		p[s.size()] = '\0';
 		return std::string_view(p, s.size());
