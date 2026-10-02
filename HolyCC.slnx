@@ -3,6 +3,22 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
+  <Folder Name="/doc/">
+    <File Path="doc/Architecture.md" />
+    <File Path="doc/DeveloperGuide.md" />
+    <File Path="doc/ProjectStatus.md" />
+    <File Path="doc/README.md" />
+    <File Path="doc/Testing.md" />
+  </Folder>
+  <Folder Name="/doc/HolyCore/">
+    <File Path="doc/HolyCore/Arena.md" />
+    <File Path="doc/HolyCore/HashMap.md" />
+    <File Path="doc/HolyCore/Platform.md" />
+    <File Path="doc/HolyCore/README.md" />
+    <File Path="doc/HolyCore/SourceManager.md" />
+    <File Path="doc/HolyCore/StringInterner.md" />
+    <File Path="doc/HolyCore/Vector.md" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".gitattributes" />
     <File Path=".gitignore" />

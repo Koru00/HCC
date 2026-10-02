@@ -39,6 +39,9 @@
     <ClInclude Include="Include\HolyCore\SourceManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\HolyCore\Diagnostics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\Platform_Win32.cpp">
@@ -51,6 +54,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Sources\SourceManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Diagnostics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -147,6 +147,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Sources\Core\Test_Arena.cpp" />
+    <ClCompile Include="Sources\Core\Test_Diagnostics.cpp" />
     <ClCompile Include="Sources\Core\Test_Platform.cpp" />
     <ClCompile Include="Sources\Core\Test_SourceManager.cpp" />
     <ClCompile Include="Sources\Core\Test_StringInterner.cpp" />

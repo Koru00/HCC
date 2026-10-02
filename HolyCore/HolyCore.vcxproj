@@ -168,6 +168,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Include\HolyCore\Arena.h" />
+    <ClInclude Include="Include\HolyCore\Diagnostics.h" />
     <ClInclude Include="Include\HolyCore\HashMap.h" />
     <ClInclude Include="Include\HolyCore\HashMap.ipp" />
     <ClInclude Include="Include\HolyCore\Platform.h" />
@@ -178,6 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\Arena.cpp" />
+    <ClCompile Include="Sources\Diagnostics.cpp" />
     <ClCompile Include="Sources\Platform_Win32.cpp" />
     <ClCompile Include="Sources\SourceManager.cpp" />
     <ClCompile Include="Sources\StringInterner.cpp" />
