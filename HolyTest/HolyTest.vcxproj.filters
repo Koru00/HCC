@@ -39,10 +39,23 @@
     <ClCompile Include="Sources\Core\Test_Diagnostics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Core\Test_Milestone.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lexer\Test_Token.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\HolyTest\Core\TestHarness.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\HolyTest\Core\Golden.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sources\Core\Bad.diag.golden" />
+    <None Include="Sources\Core\Bad.HC" />
   </ItemGroup>
 </Project>

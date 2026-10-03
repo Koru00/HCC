@@ -1,0 +1,5 @@
+root = true
+
+[*.{HC,golden}]
+end_of_line = lf
+indent_style = space

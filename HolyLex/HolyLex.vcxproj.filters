@@ -18,5 +18,16 @@
     <ClCompile Include="Sources\Lexer.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Keywords.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Include\HolyLex\Token.h">
+      <Filter>Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\HolyLex\Keywords.h">
+      <Filter>Includes</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

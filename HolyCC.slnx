@@ -20,6 +20,7 @@
     <File Path="doc/HolyCore/Vector.md" />
   </Folder>
   <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
     <File Path=".gitattributes" />
     <File Path=".gitignore" />
   </Folder>

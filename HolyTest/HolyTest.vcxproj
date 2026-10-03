@@ -148,9 +148,11 @@
   <ItemGroup>
     <ClCompile Include="Sources\Core\Test_Arena.cpp" />
     <ClCompile Include="Sources\Core\Test_Diagnostics.cpp" />
+    <ClCompile Include="Sources\Core\Test_Milestone.cpp" />
     <ClCompile Include="Sources\Core\Test_Platform.cpp" />
     <ClCompile Include="Sources\Core\Test_SourceManager.cpp" />
     <ClCompile Include="Sources\Core\Test_StringInterner.cpp" />
+    <ClCompile Include="Sources\Lexer\Test_Token.cpp" />
     <ClCompile Include="Sources\Runner.cpp" />
     <ClCompile Include="Sources\Core\Test_HashMap.cpp" />
     <ClCompile Include="Sources\Core\Test_Vector.cpp" />
@@ -164,7 +166,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\HolyTest\Core\Golden.h" />
     <ClInclude Include="Include\HolyTest\Core\TestHarness.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sources\Core\Bad.diag.golden" />
+    <None Include="Sources\Core\Bad.HC" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

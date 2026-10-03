@@ -19,12 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Keywords.cpp" />
     <ClCompile Include="Sources\Lexer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HolyCore\HolyCore.vcxproj">
       <Project>{f054f43b-cf92-4f28-89d7-a52943e02197}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Include\HolyLex\Keywords.h" />
+    <ClInclude Include="Include\HolyLex\Token.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>

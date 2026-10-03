@@ -8,3 +8,4 @@ build/
 *.user
 *.suo
 *.tmp
+*.actual

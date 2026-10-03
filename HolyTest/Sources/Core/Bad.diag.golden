@@ -1,0 +1,12 @@
+Sources/Core/Bad.HC:3:11: error: expected expression before ';'
+  I64 x = ;
+         ^
+Sources/Core/Bad.HC:4:16: error: expected ';' after expression
+  Print("hi\n")
+               ^
+Sources/Core/Bad.HC:3:7: warning: unused variable 'x'
+  I64 x = ;
+     ^
+Sources/Core/Bad.HC:5:3: error: undeclared identifier 'y'
+  y = 5;
+ ^

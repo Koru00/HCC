@@ -145,4 +145,3 @@ TEST(Diag_Clear) {
 	diagEngine.Error(SourceLoc{}, "again");
 	CHECK(diagEngine.Count() == 1);
 }
-
