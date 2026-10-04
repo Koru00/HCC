@@ -29,5 +29,8 @@
     <ClInclude Include="Include\HolyLex\Keywords.h">
       <Filter>Includes</Filter>
     </ClInclude>
+    <ClInclude Include="Include\HolyLex\Lexer.h">
+      <Filter>Includes</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

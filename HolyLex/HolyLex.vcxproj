@@ -29,6 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\HolyLex\Keywords.h" />
+    <ClInclude Include="Include\HolyLex\Lexer.h" />
     <ClInclude Include="Include\HolyLex\Token.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

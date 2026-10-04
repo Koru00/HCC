@@ -45,6 +45,9 @@
     <ClCompile Include="Sources\Lexer\Test_Token.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Lexer\Test_Lexer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\HolyTest\Core\TestHarness.h">
@@ -57,5 +60,6 @@
   <ItemGroup>
     <None Include="Sources\Core\Bad.diag.golden" />
     <None Include="Sources\Core\Bad.HC" />
+    <None Include="Sources\Core\Bad.diag.golden.actual" />
   </ItemGroup>
 </Project>

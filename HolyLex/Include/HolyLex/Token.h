@@ -35,8 +35,6 @@
 	X(Caret, "^") \
 	X(Tilde, "~") \
     X(Question, "?") \
-	X(Dollar, "$") \
-    X(Hash, "#") \
 	/* Two-character operators */ \
 	X(PlusPlus, "++") \
 	X(MinusMinus, "--") \
@@ -49,7 +47,6 @@
 	X(CaretCaret, "^^") \
 	X(PipePipe, "||") \
 	X(ColonColon, "::") \
-    X(HashHash, "##") \
 	/* Compound assignment */ \
 	X(PlusEqual, "+=") \
 	X(MinusEqual, "-=") \

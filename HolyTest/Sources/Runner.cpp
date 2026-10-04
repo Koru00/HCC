@@ -22,7 +22,7 @@ std::string_view get_option(std::string_view option, int argc, char** argv) {
     return {};
 }
 
-int main(int argc, char** argv) {
+int main(int argc, const char* argv[]) {
     bool list = false;
 	const char* filter = nullptr;
     for (int i = 1; i < argc; ++i) {
