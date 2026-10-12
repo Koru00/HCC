@@ -31,6 +31,10 @@ namespace holy::lex {
 		Token LexIdentifierOrKeyword(); // m_pos is at an identifier start
 		bool TryLexPunctuator(Token& out); // longest match; false (and no movement) if none
 		Token LexUnexpected(); // consumes one byte, reports, returns Unknown
+		Token LexNumber(); // m_pos is at a digit, or at '.' followed by a digit (defined in NumberLiteral.cpp)
+		Token LexString(); // m_pos is at '"'
+		Token LexChar(); // m_pos is at '\''
+		uint8_t ReadEscape(); // m_pos is at '\\'; consumes the escape, returns its byte; reports and returns a placeholder if invalid
 
 		[[nodiscard]] char Peek(size_t ahead = 0) const; // byte at m_pos + ahead, or '\0' past the end
 		[[nodiscard]] core::SourceLoc LocAt(size_t offset) const; // offset must be <= file size
@@ -45,4 +49,50 @@ namespace holy::lex {
 		std::string_view m_src;
 		size_t m_pos = 0;
 	};
+}
+
+namespace holy::lex::detail {
+	constexpr bool IsIdentStart(char c) {
+		if (c >= 'a' && c <= 'z') {
+			return true;
+		}
+		else if (c >= 'A' && c <= 'Z') {
+			return true;
+		}
+		else if (c == '_') {
+			return true;
+		}
+
+		return false;
+	}
+
+	constexpr bool IsIdentChar(char c) {
+		return IsIdentStart(c) || (c >= '0' && c <= '9');
+	}
+
+	constexpr bool IsDigit(char c) {
+		return c >= '0' && c <= '9';
+	}
+
+	constexpr bool IsHexDigit(char c) {
+		return IsDigit(c) || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
+	}
+
+	constexpr unsigned DigitValue(char c) {
+		assert(IsHexDigit(c));
+		if (c >= '0' && c <= '9') {
+			return c - '0';
+		}
+
+		if (c >= 'a' && c <= 'f') {
+			return c - 'a' + 10;
+		}
+
+		if (c >= 'A' && c <= 'F') {
+			return c - 'A' + 10;
+		}
+		
+		// Handle invalid characters
+		return 0;
+	}
 }

@@ -153,6 +153,7 @@
     <ClCompile Include="Sources\Core\Test_Platform.cpp" />
     <ClCompile Include="Sources\Core\Test_SourceManager.cpp" />
     <ClCompile Include="Sources\Core\Test_StringInterner.cpp" />
+    <ClCompile Include="Sources\Lexer\Test_Literals.cpp" />
     <ClCompile Include="Sources\Lexer\Test_Token.cpp" />
     <ClCompile Include="Sources\Runner.cpp" />
     <ClCompile Include="Sources\Core\Test_HashMap.cpp" />
@@ -169,6 +170,7 @@
   <ItemGroup>
     <ClInclude Include="Include\HolyTest\Core\Golden.h" />
     <ClInclude Include="Include\HolyTest\Core\TestHarness.h" />
+    <ClInclude Include="Include\HolyTest\Lexer\LexTestUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sources\Core\Bad.diag.golden" />

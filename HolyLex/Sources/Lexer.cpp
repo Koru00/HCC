@@ -7,6 +7,7 @@
 #include <vector>
 
 using namespace holy::core;
+using namespace holy::lex::detail;
 
 namespace holy::lex {
 	namespace {
@@ -22,24 +23,6 @@ namespace holy::lex {
 			default:
 				return false;
 			}
-		}
-
-		bool IsIdentStart(char c) {
-			if (c >= 'a' && c <= 'z') {
-				return true;
-			}
-			else if (c >= 'A' && c <= 'Z') {
-				return true;
-			}
-			else if (c == '_') {
-				return true;
-			}
-
-			return false;
-		}
-
-		bool IsIdentChar(char c) {
-			return IsIdentStart(c) || (c >= '0' && c <= '9');
 		}
 
 		struct PunctEntry {
@@ -73,6 +56,15 @@ namespace holy::lex {
 				return std::format("unexpected byte 0x{:02X}", static_cast<unsigned char>(c));
 			}
 		}
+
+		struct Escape {
+			char from;
+			char to;
+		};
+
+		constexpr Escape kSimpleEscapes[] = {
+			{'n', '\n'}, {'r', '\r'}, {'t', '\t'}, {'0', '\0'}, {'\\', '\\'}, {'\'', '\''}, {'"', '"'},
+		};
 	}
 
 
@@ -92,6 +84,18 @@ namespace holy::lex {
 		
 		if (IsIdentStart(Peek())) {
 			return LexIdentifierOrKeyword();
+		}
+
+		if (IsDigit(Peek()) || Peek() == '.' && IsDigit(Peek(1))) {
+			return LexNumber();
+		}
+
+		if (Peek() == '"') {
+			return LexString();
+		}
+
+		if (Peek() == '\'') {
+			return LexChar();
 		}
 		
 		Token t;
@@ -182,6 +186,122 @@ namespace holy::lex {
 		Token t = MakeToken(TokenKind::Unknown, start, m_pos);
 		m_diags.Error(t.loc, DescribeByte(m_src[start]));
 		return t;
+	}
+
+	Token holy::lex::Lexer::LexString() {
+		size_t start = m_pos;
+		++m_pos;
+		std::string decoded;
+		while (true) {
+			if (m_pos >= m_src.size()) {
+				m_diags.Report(Severity::Error, LocAt(start), "unterminated string literal");
+				return MakeToken(TokenKind::Unknown, start, m_pos);
+			}
+
+			char c = m_src[m_pos];
+			if (c == '\"') {
+				++m_pos;
+				break;
+			}
+
+			if (c == '\\') {
+				decoded.push_back(static_cast<char>(ReadEscape()));
+			}
+			else {
+				decoded.push_back(c);
+				++m_pos;
+			}
+		}
+
+		Token t = MakeToken(TokenKind::StringLiteral, start, m_pos);
+		t.stringValue = m_arena.CopyString(decoded);
+		return t;
+	}
+
+	Token Lexer::LexChar() {
+		size_t start = m_pos;
+		++m_pos;
+		uint64_t value = 0;
+		size_t count = 0;
+		bool tooLong = false;
+		while (m_pos < m_src.size() && m_src[m_pos] != '\n') {
+			if (Peek() == '\'') {
+				++m_pos;
+				if (count == 0) {
+					m_diags.Report(Severity::Error, LocAt(start), "empty character constant");
+					return MakeToken(TokenKind::CharLiteral, start, m_pos);
+				}
+				if (tooLong) {
+					m_diags.Report(Severity::Error, LocAt(start), "character constant is too long");
+					Token t = MakeToken(TokenKind::CharLiteral, start, m_pos);
+					t.intValue = value;
+					return t;
+				}
+
+				Token t = MakeToken(TokenKind::CharLiteral, start, m_pos);
+				t.intValue = value;
+				return t;
+			}
+
+			uint8_t byte;
+			if (Peek() == '\\') {
+				byte = ReadEscape();
+			}
+			else {
+				byte = static_cast<uint8_t>(Peek());
+				++m_pos;
+			}
+
+			if (count < 8) {
+				value |= static_cast<uint64_t>(byte) << (8 * count);
+			}
+			else {
+				tooLong = true;
+			}
+			++count;
+		}
+
+		m_diags.Report(Severity::Error, LocAt(start), "unterminated character constant");
+		return MakeToken(TokenKind::Unknown, start, m_pos);
+	}
+
+	uint8_t Lexer::ReadEscape() {
+		size_t start = m_pos;
+		++m_pos;
+		if (m_pos >= m_src.size()) {
+			return '\\';
+		}
+
+		char c = m_src[m_pos];
+		if (c == 'x') {
+			++m_pos;
+			if (IsHexDigit(Peek()) && IsHexDigit(Peek(1))) {
+				uint8_t value = (DigitValue(Peek()) << 4) | DigitValue(Peek(1));
+				m_pos += 2;
+				return value;
+			}
+			else {
+				m_diags.Report(Severity::Error, LocAt(start), "invalid hex escape sequence");
+				return 0;
+			}
+		}
+		else {
+			for (const auto& esc : kSimpleEscapes) {
+				if (esc.from == c) {
+					++m_pos;
+					return esc.to;
+				}
+			}
+			if (c >= 0x20 && c <= 0x7E) {
+				// If c is printable ASCII
+				m_diags.Report(Severity::Error, LocAt(start), "unknown escape sequence '" + std::string(1, c) + "'");
+			}
+			else {
+				m_diags.Report(Severity::Error, LocAt(start), "unknown escape sequence");
+			}
+			++m_pos;
+			return c;
+		}
 	}
 
 	char Lexer::Peek(size_t ahead) const {

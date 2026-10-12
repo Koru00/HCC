@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Sources\Keywords.cpp" />
     <ClCompile Include="Sources\Lexer.cpp" />
+    <ClCompile Include="Sources\NumberLiteral.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HolyCore\HolyCore.vcxproj">

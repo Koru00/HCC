@@ -35,6 +35,7 @@
 	X(Caret, "^") \
 	X(Tilde, "~") \
     X(Question, "?") \
+    X(Equal, "=") \
 	/* Two-character operators */ \
 	X(PlusPlus, "++") \
 	X(MinusMinus, "--") \

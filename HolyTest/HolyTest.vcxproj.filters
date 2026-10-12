@@ -48,12 +48,18 @@
     <ClCompile Include="Sources\Lexer\Test_Lexer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Lexer\Test_Literals.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\HolyTest\Core\TestHarness.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\HolyTest\Core\Golden.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\HolyTest\Lexer\LexTestUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -21,6 +21,9 @@
     <ClCompile Include="Sources\Keywords.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\NumberLiteral.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\HolyLex\Token.h">
