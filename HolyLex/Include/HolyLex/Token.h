@@ -102,26 +102,11 @@
 	X(KwOffset, "offset") \
 	X(KwLastclass, "lastclass") \
 	X(KwDefined, "defined")
-	///* Types */ \
-	//X(KwU0, "U0") \
- //   X(KwI8, "I8") \
- //   X(KwU8, "U8") \
- //   X(KwI16, "I16") \
- //   X(KwU16, "U16") \
- //   X(KwI32, "I32") \
- //   X(KwU32, "U32") \
- //   X(KwI64, "I64") \
- //   X(KwU64, "U64") \
- //   X(KwF64, "F64") \
- //   X(KwBool, "bool") \
- //   X(KwTrue, "true") \
- //   X(KwFalse, "false") \
- //   X(KwNull, "NULL")
 
 
 namespace holy::lex {
 	enum class TokenKind {
-		Eof, Unknown, Identifier, IntLiteral, FloatLiteral, CharLiteral, StringLiteral,
+		Eof, Unknown, Identifier, Directive, RawBlock, IntLiteral, FloatLiteral, CharLiteral, StringLiteral,
 #define X(name, spelling) name,
 		HOLY_PUNCTUATORS(X)
 #undef X
@@ -147,6 +132,8 @@ namespace holy::lex {
 		uint64_t intValue = 0; // IntLiteral and CharLiteral
 		double floatValue = 0.0; // FloatLiteral
 		std::string_view stringValue; // StringLiteral: decoded bytes (arena copy)
+		bool startLine = false;
+		bool hasDolDoc = false;
 
 		[[nodiscard]] bool Is(TokenKind k) const { return kind == k; }
 		[[nodiscard]] bool IsNot(TokenKind k) const { return kind != k; }

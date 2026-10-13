@@ -23,6 +23,12 @@ namespace holy::lex {
 		Lexer& operator=(const Lexer&) = delete;
 
 		[[nodiscard]] Token Next();
+		
+		// Parser contract: call this right after consuming the '{' token of an "asm {" block.
+		// Reads from just after that brace up to its matching '}' and returns the body as one RawBlock token.
+		// The lexer is then positioned AT the closing '}', so the next Next() returns RBrace.
+		// Works no matter how many tokens the parser has already read past the '{'; the parser must discard those.
+		[[nodiscard]] Token CaptureRawBlock(const Token& openBrace);
 		[[nodiscard]] core::FileId File() { return m_file; }
 
 	private:
@@ -35,11 +41,14 @@ namespace holy::lex {
 		Token LexString(); // m_pos is at '"'
 		Token LexChar(); // m_pos is at '\''
 		uint8_t ReadEscape(); // m_pos is at '\\'; consumes the escape, returns its byte; reports and returns a placeholder if invalid
+		Token LexToken();	// dispatch on the current byte (the old body of Next())
+		Token LexDirective(); // m_pos is at '#'
 
 		[[nodiscard]] char Peek(size_t ahead = 0) const; // byte at m_pos + ahead, or '\0' past the end
 		[[nodiscard]] core::SourceLoc LocAt(size_t offset) const; // offset must be <= file size
 		[[nodiscard]] Token MakeToken(TokenKind kind, size_t start, size_t end); // kind, loc, and text only
 
+		bool m_newlineSeen;
 		core::Arena& m_arena;
 		const core::SourceManager& m_sources;
 		core::DiagEngine& m_diags;

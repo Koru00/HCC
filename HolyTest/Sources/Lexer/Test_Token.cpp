@@ -23,6 +23,8 @@ namespace {
 		return kind == TokenKind::Eof
 			|| kind == TokenKind::Unknown
 			|| kind == TokenKind::Identifier
+			|| kind == TokenKind::Directive
+			|| kind == TokenKind::RawBlock
 			|| kind == TokenKind::IntLiteral
 			|| kind == TokenKind::FloatLiteral
 			|| kind == TokenKind::CharLiteral
@@ -41,6 +43,8 @@ TEST(Token_DefaultIsUnknown) {
 	CHECK(t.intValue == 0);
 	CHECK(t.floatValue == 0.0);
 	CHECK(t.stringValue.empty());
+	CHECK(!t.startLine);
+	CHECK(!t.hasDolDoc);
 	CHECK(t.Is(TokenKind::Unknown));
 	CHECK(t.IsNot(TokenKind::Eof));
 }
@@ -50,6 +54,8 @@ TEST(Token_KindNamesAndSpellings) {
 	CHECK(std::string_view(TokenKindName(TokenKind::LParen)) == "LParen");
 	CHECK(std::string_view(TokenKindName(TokenKind::KwIf)) == "KwIf");
 	CHECK(std::string_view(TokenKindName(TokenKind::Identifier)) == "Identifier");
+	CHECK(std::string_view(TokenKindName(TokenKind::Directive)) == "Directive");
+	CHECK(std::string_view(TokenKindName(TokenKind::RawBlock)) == "RawBlock");
 
 	CHECK(std::string_view(TokenKindSpelling(TokenKind::LParen)) == "(");
 	CHECK(std::string_view(TokenKindSpelling(TokenKind::KwIf)) == "if");
@@ -58,6 +64,8 @@ TEST(Token_KindNamesAndSpellings) {
 	CHECK(std::string_view(TokenKindSpelling(TokenKind::Ellipsis)) == "...");
 	CHECK(TokenKindSpelling(TokenKind::Eof) == nullptr);
 	CHECK(TokenKindSpelling(TokenKind::Identifier) == nullptr);
+	CHECK(TokenKindSpelling(TokenKind::Directive) == nullptr);
+	CHECK(TokenKindSpelling(TokenKind::RawBlock) == nullptr);
 	CHECK(TokenKindSpelling(TokenKind::IntLiteral) == nullptr);
 }
 

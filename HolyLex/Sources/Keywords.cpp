@@ -6,7 +6,7 @@
 
 namespace {
 	const char* kKindNames[] = {
-		"Eof", "Unknown", "Identifier", "IntLiteral", "FloatLiteral", "CharLiteral", "StringLiteral",
+		"Eof", "Unknown", "Identifier", "Directive", "RawBlock", "IntLiteral", "FloatLiteral", "CharLiteral", "StringLiteral",
 #define X(name, spelling) #name,
 		HOLY_PUNCTUATORS(X)
 #undef X
@@ -18,7 +18,7 @@ namespace {
 	};
 
 	const char* kSpelling[] = {
-		nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+		nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
 #define X(name, spelling) spelling,
 		HOLY_PUNCTUATORS(X)
 #undef X

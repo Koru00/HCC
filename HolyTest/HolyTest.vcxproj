@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClCompile Include="Sources\Core\Test_Arena.cpp" />
     <ClCompile Include="Sources\Core\Test_Diagnostics.cpp" />
+    <ClCompile Include="Sources\Lexer\Test_HolyCSpecifics.cpp" />
     <ClCompile Include="Sources\Lexer\Test_Lexer.cpp" />
     <ClCompile Include="Sources\Core\Test_Milestone.cpp" />
     <ClCompile Include="Sources\Core\Test_Platform.cpp" />

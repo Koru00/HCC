@@ -51,6 +51,9 @@
     <ClCompile Include="Sources\Lexer\Test_Literals.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Lexer\Test_HolyCSpecifics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\HolyTest\Core\TestHarness.h">
