@@ -1,0 +1,25 @@
+1:1^ Identifier "I64"
+1:5 Identifier "a"
+1:7 Equal
+1:9 IntLiteral 1
+1:11 Semi
+2:1^ StringLiteral "bad q escape"
+2:16 Semi
+3:1^ Identifier "a"
+3:3 Unknown "\"
+3:5 Identifier "b"
+3:6 Semi
+4:16^ Eof
+--- diagnostics ---
+Sources/Lexer/Error.HC:1:10: error: invalid suffix 'x' on numeric literal
+I64 a = 1x;
+         ^
+Sources/Lexer/Error.HC:2:6: error: unknown escape sequence 'q'
+"bad \q escape";
+    ^
+Sources/Lexer/Error.HC:3:3: error: unexpected character '\'
+a \ b;
+ ^
+Sources/Lexer/Error.HC:4:1: error: unterminated block comment
+/* never closed
+^

@@ -63,7 +63,7 @@ namespace holy::lex {
 		};
 
 		constexpr Escape kSimpleEscapes[] = {
-			{'n', '\n'}, {'r', '\r'}, {'t', '\t'}, {'0', '\0'}, {'\\', '\\'}, {'\'', '\''}, {'"', '"'},
+			{'n', '\n'}, {'r', '\r'}, {'t', '\t'}, {'0', '\0'}, {'\\', '\\'}, {'\'', '\''}, {'"', '"'}, {'`', '`'},
 		};
 
 		bool ScanDolDoc(std::string_view raw, size_t& unterminatedAt) {
@@ -115,11 +115,18 @@ namespace holy::lex {
 
 
 	Lexer::Lexer(core::Arena& arena, const core::SourceManager& sources, core::DiagEngine& diags, 
-		core::StringInterner& interner, const KeywordTable& keywords, core::FileId file) : m_arena(arena), m_sources(sources), m_diags(diags), 
+		core::StringInterner& interner, const KeywordTable& keywords, core::FileId file, LexerOptions options) : m_arena(arena), m_sources(sources), m_diags(diags), 
 		m_interner(interner), m_keywords(keywords), m_file(file) {
 		
 		assert(file.IsValid());
 		m_src = m_sources.Contents(file);
+		m_end = m_src.size();
+		if (options.nulTerminatesSource) {
+			const size_t nul = m_src.find('\0');
+			if (nul != std::string_view::npos) {
+				m_end = nul;
+			}
+		}
 	}
 
 	Token Lexer::Next() {
@@ -136,11 +143,11 @@ namespace holy::lex {
 		assert(openBrace.kind == TokenKind::LBrace);
 		assert(openBrace.text.data() >= m_src.data());
 		size_t begin = static_cast<size_t>(openBrace.text.data() - m_src.data()) + openBrace.text.size();
-		assert(begin <= m_src.size());
+		assert(begin <= m_end);
 		m_pos = begin;
 		size_t depth = 1;
 		bool closed = false;
-		while (m_pos < m_src.size()) {
+		while (m_pos < m_end) {
 			char c = Peek();
 			switch (c) {
 			case '{':
@@ -157,9 +164,9 @@ namespace holy::lex {
 				break;
 			case '"':
 				++m_pos;
-				while (m_pos < m_src.size() && Peek() != '"') {
+				while (m_pos < m_end && Peek() != '"') {
 					if (m_src[m_pos] == '\\') {
-						m_pos += 2;
+						m_pos += std::min<size_t>(2, m_end - m_pos);
 					}
 					else {
 						++m_pos;
@@ -172,9 +179,9 @@ namespace holy::lex {
 				break;
 			case '\'':
 				++m_pos;
-				while (m_pos < m_src.size() && Peek() != '\'' && Peek() != '\n') {
+				while (m_pos < m_end && Peek() != '\'' && Peek() != '\n') {
 					if (m_src[m_pos] == '\\') {
-						m_pos += 2;
+						m_pos += std::min<size_t>(2, m_end - m_pos);
 					}
 					else {
 						++m_pos;
@@ -187,16 +194,22 @@ namespace holy::lex {
 				break;
 			case '/':
 				if (Peek(1) == '/') {
-					while (Peek() != '\n') {
+					while (m_pos < m_end && Peek() != '\n') {
 						++m_pos;
 					}
 				}
 				else if (Peek(1) == '*') {
 					SkipBlockComment();
 				}
+				else {
+					++m_pos;
+				}
 				break;
 			default:
 				++m_pos;
+				break;
+			}
+			if (closed) {
 				break;
 			}
 		}
@@ -207,7 +220,7 @@ namespace holy::lex {
 
 		Token t = MakeToken(TokenKind::RawBlock, begin, m_pos);
 		t.text = m_src.substr(begin, m_pos - begin);
-		t.loc = LocAt(openBrace.loc.offset + 1); // First byte after '{'
+		t.loc = LocAt(begin); // First byte after '{'
 		size_t i = m_pos;
 		while (i > begin && (m_src[i - 1] == ' ' || m_src[i - 1] == '\t' || m_src[i - 1] == '\r')) {
 			--i;
@@ -218,7 +231,7 @@ namespace holy::lex {
 
 	void Lexer::SkipTrivia() {
 		while (true) {
-			if (m_pos >= m_src.size()) {
+			if (m_pos >= m_end) {
 				return;
 			}
 			else if (IsSpace(Peek())) {
@@ -228,8 +241,11 @@ namespace holy::lex {
 				m_pos++;
 				continue;
 			}
+			else if (Peek() == '\\' && SkipLineSplice()) {
+				continue;
+			}
 			else if (Peek() == '/' && Peek(1) == '/') {
-				while (m_pos < m_src.size() && Peek() != '\n') {
+				while (m_pos < m_end && Peek() != '\n') {
 					m_pos++;
 				}
 				continue;
@@ -249,11 +265,32 @@ namespace holy::lex {
 		}
 	}
 
+	bool Lexer::SkipLineSplice() {
+		if (Peek() != '\\') {
+			return false;
+		}
+
+		size_t newlineLength = 0;
+		if (Peek(1) == '\n') {
+			newlineLength = 1;
+		}
+		else if (Peek(1) == '\r') {
+			newlineLength = Peek(2) == '\n' ? 2 : 1;
+		}
+
+		if (newlineLength == 0) {
+			return false;
+		}
+
+		m_pos += 1 + newlineLength;
+		return true;
+	}
+
 	void Lexer::SkipBlockComment() {
 		size_t start = m_pos;
 		m_pos += 2;
 		size_t depth = 1;
-		while (m_pos < m_src.size()) {
+		while (m_pos < m_end) {
 			if (Peek() == '*' && Peek(1) == '/') {
 				m_pos += 2;
 				if (--depth == 0) {
@@ -284,7 +321,7 @@ namespace holy::lex {
 	}
 
 	bool Lexer::TryLexPunctuator(Token& out) {
-		std::string_view rest = m_src.substr(m_pos);
+		std::string_view rest = m_src.substr(m_pos, m_end - m_pos);
 		for (size_t i = 0; i < Punctuators().size(); i++) {
 			PunctEntry entry = Punctuators()[i];
 			if (rest.size() >= entry.length && std::memcmp(rest.data(), entry.spelling, entry.length) == 0) {
@@ -311,7 +348,7 @@ namespace holy::lex {
 		++m_pos;
 		std::string decoded;
 		while (true) {
-			if (m_pos >= m_src.size()) {
+			if (m_pos >= m_end) {
 				m_diags.Report(Severity::Error, LocAt(start), "unterminated string literal");
 				return MakeToken(TokenKind::Unknown, start, m_pos);
 			}
@@ -320,6 +357,10 @@ namespace holy::lex {
 			if (c == '\"') {
 				++m_pos;
 				break;
+			}
+
+			if (c == '\\' && SkipLineSplice()) {
+				continue;
 			}
 
 			if (c == '\\') {
@@ -348,12 +389,13 @@ namespace holy::lex {
 		uint64_t value = 0;
 		size_t count = 0;
 		bool tooLong = false;
-		while (m_pos < m_src.size() && m_src[m_pos] != '\n') {
+		while (m_pos < m_end && m_src[m_pos] != '\n') {
 			if (Peek() == '\'') {
 				++m_pos;
 				if (count == 0) {
-					m_diags.Report(Severity::Error, LocAt(start), "empty character constant");
-					return MakeToken(TokenKind::CharLiteral, start, m_pos);
+					Token t = MakeToken(TokenKind::CharLiteral, start, m_pos);
+					t.intValue = 0;
+					return t;
 				}
 				if (tooLong) {
 					m_diags.Report(Severity::Error, LocAt(start), "character constant is too long");
@@ -368,6 +410,10 @@ namespace holy::lex {
 			}
 
 			uint8_t byte;
+			if (Peek() == '\\' && SkipLineSplice()) {
+				continue;
+			}
+
 			if (Peek() == '\\') {
 				byte = ReadEscape();
 			}
@@ -376,7 +422,7 @@ namespace holy::lex {
 				++m_pos;
 			}
 
-			if (count < 8) {
+			if (count < 16) {
 				value |= static_cast<uint64_t>(byte) << (8 * count);
 			}
 			else {
@@ -392,7 +438,7 @@ namespace holy::lex {
 	uint8_t Lexer::ReadEscape() {
 		size_t start = m_pos;
 		++m_pos;
-		if (m_pos >= m_src.size()) {
+		if (m_pos >= m_end) {
 			return '\\';
 		}
 
@@ -429,8 +475,8 @@ namespace holy::lex {
 	}
 
 	Token Lexer::LexToken() {
-		if (m_pos >= m_src.size()) {
-			return MakeToken(TokenKind::Eof, m_src.size(), m_src.size());
+		if (m_pos >= m_end) {
+			return MakeToken(TokenKind::Eof, m_end, m_end);
 		}
 
 		if (IsIdentStart(Peek())) {
@@ -480,7 +526,7 @@ namespace holy::lex {
 	}
 
 	char Lexer::Peek(size_t ahead) const {
-		return (m_pos + ahead < m_src.size()) ? m_src[m_pos + ahead] : '\0';
+		return (m_pos < m_end && ahead < m_end - m_pos) ? m_src[m_pos + ahead] : '\0';
 	}
 
 	core::SourceLoc Lexer::LocAt(size_t offset) const {

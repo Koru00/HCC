@@ -28,6 +28,112 @@ TEST(Directive_Basics) {
 	CHECK(tokens[6].kind == TokenKind::Eof);
 }
 
+TEST(RawBlock_Capture) {
+	Fixture fx;
+	const std::string_view source = R"lit(asm { MOV EAX, 1 // }
+RET /* } */ "}" '}' { nested } }
+x)lit";
+	fx.file = fx.sm.AddBuffer("t.HC", source);
+	Lexer lx(fx.arena, fx.sm, fx.diags, fx.interner, fx.keywords, fx.file);
+
+	CHECK(lx.Next().kind == TokenKind::KwAsm);
+	Token lbrace = lx.Next();
+	CHECK(lbrace.kind == TokenKind::LBrace);
+	Token raw = lx.CaptureRawBlock(lbrace);
+	CHECK(raw.kind == TokenKind::RawBlock);
+	CHECK(raw.text == " MOV EAX, 1 // }\nRET /* } */ \"}\" '}' { nested } ");
+	const PresumedLoc rawLoc = fx.sm.Resolve(raw.loc);
+	CHECK(rawLoc.line == 1);
+	CHECK(rawLoc.column == 6);
+	const std::string_view contents = fx.sm.Contents(fx.file);
+	CHECK(raw.text.data() >= contents.data());
+	CHECK(raw.text.data() + raw.text.size() <= contents.data() + contents.size());
+	CHECK(lx.Next().kind == TokenKind::RBrace);
+	CHECK(lx.Next().kind == TokenKind::Identifier);
+	CHECK(lx.Next().kind == TokenKind::Eof);
+	CHECK(fx.diags.Count() == 0);
+}
+
+TEST(RawBlock_RewindsOverLookahead) {
+	Fixture fx;
+	fx.file = fx.sm.AddBuffer("t.HC", "asm { A } z");
+	Lexer lx(fx.arena, fx.sm, fx.diags, fx.interner, fx.keywords, fx.file);
+
+	CHECK(lx.Next().kind == TokenKind::KwAsm);
+	Token lbrace = lx.Next();
+	CHECK(lbrace.kind == TokenKind::LBrace);
+	CHECK(lx.Next().kind == TokenKind::Identifier);
+	CHECK(lx.Next().kind == TokenKind::RBrace);
+	Token raw = lx.CaptureRawBlock(lbrace);
+	CHECK(raw.kind == TokenKind::RawBlock);
+	CHECK(raw.text == " A ");
+	CHECK(lx.Next().kind == TokenKind::RBrace);
+	CHECK(lx.Next().kind == TokenKind::Identifier);
+	CHECK(lx.Next().kind == TokenKind::Eof);
+	CHECK(fx.diags.Count() == 0);
+}
+
+TEST(RawBlock_EdgeCases) {
+	{
+		Fixture fx;
+		fx.file = fx.sm.AddBuffer("t.HC", "asm {}");
+		Lexer lx(fx.arena, fx.sm, fx.diags, fx.interner, fx.keywords, fx.file);
+		CHECK(lx.Next().kind == TokenKind::KwAsm);
+		Token lbrace = lx.Next();
+		Token raw = lx.CaptureRawBlock(lbrace);
+		CHECK(raw.text.empty());
+		CHECK(lx.Next().kind == TokenKind::RBrace);
+		CHECK(fx.diags.Count() == 0);
+	}
+
+	{
+		Fixture fx;
+		fx.file = fx.sm.AddBuffer("t.HC", "asm { MOV");
+		Lexer lx(fx.arena, fx.sm, fx.diags, fx.interner, fx.keywords, fx.file);
+		CHECK(lx.Next().kind == TokenKind::KwAsm);
+		Token lbrace = lx.Next();
+		Token raw = lx.CaptureRawBlock(lbrace);
+		CHECK(raw.text == " MOV");
+		CHECK(fx.diags.ErrorCount() == 1);
+		CHECK(fx.diags.All()[0].message == "unterminated raw block, expected '}'");
+		const PresumedLoc diagLoc = fx.sm.Resolve(fx.diags.All()[0].loc);
+		CHECK(diagLoc.line == 1);
+		CHECK(diagLoc.column == 5);
+		CHECK(lx.Next().kind == TokenKind::Eof);
+	}
+
+	{
+		Fixture fx;
+		fx.file = fx.sm.AddBuffer("t.HC", "asm {\n RET\n}\nx");
+		Lexer lx(fx.arena, fx.sm, fx.diags, fx.interner, fx.keywords, fx.file);
+		CHECK(lx.Next().kind == TokenKind::KwAsm);
+		Token lbrace = lx.Next();
+		Token raw = lx.CaptureRawBlock(lbrace);
+		CHECK(raw.text == "\n RET\n");
+		Token rbrace = lx.Next();
+		CHECK(rbrace.kind == TokenKind::RBrace);
+		CHECK(rbrace.startLine);
+		Token identifier = lx.Next();
+		CHECK(identifier.kind == TokenKind::Identifier);
+		CHECK(identifier.startLine);
+		CHECK(fx.diags.Count() == 0);
+	}
+
+	{
+		Fixture fx;
+		fx.file = fx.sm.AddBuffer("t.HC", "asm { RET }");
+		Lexer lx(fx.arena, fx.sm, fx.diags, fx.interner, fx.keywords, fx.file);
+		CHECK(lx.Next().kind == TokenKind::KwAsm);
+		Token lbrace = lx.Next();
+		Token raw = lx.CaptureRawBlock(lbrace);
+		CHECK(raw.text == " RET ");
+		Token rbrace = lx.Next();
+		CHECK(rbrace.kind == TokenKind::RBrace);
+		CHECK(!rbrace.startLine);
+		CHECK(fx.diags.Count() == 0);
+	}
+}
+
 TEST(Directive_NotAtLineStart) {
 	Fixture fx;
 	std::vector<Token> tokens = LexAll(fx, "I64 x; #exe {}");

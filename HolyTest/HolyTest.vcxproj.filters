@@ -54,6 +54,12 @@
     <ClCompile Include="Sources\Lexer\Test_HolyCSpecifics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Lexer\Test_LexerGoldens.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Lexer\Test_Corpus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\HolyTest\Core\TestHarness.h">
@@ -65,10 +71,22 @@
     <ClInclude Include="Include\HolyTest\Lexer\LexTestUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\HolyTest\Lexer\TokenDump.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Sources\Core\Bad.diag.golden" />
     <None Include="Sources\Core\Bad.HC" />
     <None Include="Sources\Core\Bad.diag.golden.actual" />
+    <None Include="Sources\Lexer\AsmBlock.HC" />
+    <None Include="Sources\Lexer\Directives.HC" />
+    <None Include="Sources\Lexer\Error.HC" />
+    <None Include="Sources\Lexer\Hello.HC" />
+    <None Include="Sources\Lexer\Literals.HC" />
+    <None Include="Sources\Lexer\Operators.HC" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Sources\Lexer\corpus_skip.txt" />
   </ItemGroup>
 </Project>

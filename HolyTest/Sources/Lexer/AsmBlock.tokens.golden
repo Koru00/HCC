@@ -1,0 +1,11 @@
+1:1^ KwAsm
+1:5 LBrace
+1:6 RawBlock "
+    MOV EAX, 1 // set
+    RET /* dove */
+"
+4:1^ RBrace
+5:1^ Identifier "I64"
+5:5 Identifier "y"
+5:6 Semi
+5:7 Eof

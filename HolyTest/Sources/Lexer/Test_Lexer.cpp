@@ -160,13 +160,44 @@ TEST(Lexer_UnexpectedCharacters) {
 
 	Fixture highByteFx;
 	LexAll(highByteFx, std::string_view("\xFF", 1));
-	CHECK(highByteFx.diags.All()[0].message == "unexpected byte 0xFF");
+	CHECK(highByteFx.diags.Count() == 0);
 
 	Fixture nulFx;
 	auto nul = LexAll(nulFx, std::string_view("a\0b", 3));
 	CHECK(Kinds(nul) == (std::vector<TokenKind>{ TokenKind::Identifier, TokenKind::Unknown, TokenKind::Identifier, TokenKind::Eof }));
 	CHECK(nulFx.diags.All()[0].message == "unexpected byte 0x00");
 	CHECK(nulFx.diags.Count() == 1);
+}
+
+TEST(Lexer_TempleOSLexicalForms) {
+	Fixture dollarFx;
+	auto dollar = LexAll(dollarFx, "$SP,\"<1>\",BI=1$");
+	CHECK(Kinds(dollar) == (std::vector<TokenKind>{ TokenKind::Dollar, TokenKind::Identifier, TokenKind::Comma,
+		TokenKind::StringLiteral, TokenKind::Comma, TokenKind::Identifier, TokenKind::Equal, TokenKind::IntLiteral,
+		TokenKind::Dollar, TokenKind::Eof }));
+	CHECK(dollarFx.diags.Count() == 0);
+	Fixture nestedDolDocFx;
+	auto nestedDolDoc = LexAll(nestedDolDocFx, R"lit("Requires $TX,"512Meg",D="DD_MEM_MIN_MEG"$ RAM")lit");
+	CHECK(Kinds(nestedDolDoc) == (std::vector<TokenKind>{ TokenKind::StringLiteral, TokenKind::Eof }));
+	CHECK(nestedDolDocFx.diags.Count() == 0);
+
+	Fixture spliceFx;
+	auto splice = LexAll(spliceFx, "1 + \\\r\n 2");
+	CHECK(Kinds(splice) == (std::vector<TokenKind>{ TokenKind::IntLiteral, TokenKind::Plus, TokenKind::IntLiteral, TokenKind::Eof }));
+	CHECK(spliceFx.diags.Count() == 0);
+
+	Fixture cp437Fx;
+	const char greek[] = { static_cast<char>(0xE9), static_cast<char>(0xE3) };
+	auto cp437 = LexAll(cp437Fx, std::string_view(greek, sizeof(greek)));
+	CHECK(Kinds(cp437) == (std::vector<TokenKind>{ TokenKind::Identifier, TokenKind::Eof }));
+	CHECK(cp437[0].text == std::string_view(greek, sizeof(greek)));
+	CHECK(cp437Fx.diags.Count() == 0);
+
+	Fixture nulTailFx;
+	const std::string_view binaryTail("a\0\x01\xFF", 4);
+	auto nulTail = LexAll(nulTailFx, binaryTail, { .nulTerminatesSource = true });
+	CHECK(Kinds(nulTail) == (std::vector<TokenKind>{ TokenKind::Identifier, TokenKind::Eof }));
+	CHECK(nulTailFx.diags.Count() == 0);
 }
 
 TEST(Lexer_LocationsAndText) {

@@ -18,9 +18,9 @@ namespace lextest {
 		FileId file;
 	};
 
-	inline std::vector<Token> LexAll(Fixture& fx, std::string_view src) {
+	inline std::vector<Token> LexAll(Fixture& fx, std::string_view src, LexerOptions options = {}) {
 		fx.file = fx.sm.AddBuffer("t.HC", src);
-		Lexer lx(fx.arena, fx.sm, fx.diags, fx.interner, fx.keywords, fx.file);
+		Lexer lx(fx.arena, fx.sm, fx.diags, fx.interner, fx.keywords, fx.file, options);
 		std::vector<Token> tokens;
 		Token t;
 		while (t.kind != TokenKind::Eof) {

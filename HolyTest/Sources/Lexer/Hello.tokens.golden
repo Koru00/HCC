@@ -1,0 +1,19 @@
+1:1^ Identifier "U8"
+1:4 Identifier "Main"
+1:8 LParen
+1:9 RParen
+2:1^ LBrace
+3:5^ StringLiteral "Hello, World!
+"
+3:22 Semi
+4:5^ Identifier "I64"
+4:9 Identifier "x"
+4:11 Equal
+4:13 IntLiteral 16
+4:18 Plus
+4:20 CharLiteral 0x4241
+4:24 Semi
+5:1^ RBrace
+6:1^ Identifier "Main"
+6:5 Semi
+6:6 Eof

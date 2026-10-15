@@ -26,10 +26,10 @@ int main(int argc, const char* argv[]) {
     bool list = false;
 	const char* filter = nullptr;
     for (int i = 1; i < argc; ++i) {
-        if ("--list" == argv[i]) {
+        if (std::string_view(argv[i]) == "--list") {
             list = true;
         }
-        else if ("--update-golden", argv[i]) {
+        else if (std::string_view(argv[i]) == "--update-golden") {
             holytest::UpdateGolden() = true;
         }
         else {

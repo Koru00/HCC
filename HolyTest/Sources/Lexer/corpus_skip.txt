@@ -1,0 +1,2 @@
+# Files the corpus test skips entirely. One path per line, relative to reference
+# Add a line only after you have confirmed the file is not valid HolyC source.

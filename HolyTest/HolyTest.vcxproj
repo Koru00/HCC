@@ -148,12 +148,14 @@
   <ItemGroup>
     <ClCompile Include="Sources\Core\Test_Arena.cpp" />
     <ClCompile Include="Sources\Core\Test_Diagnostics.cpp" />
+    <ClCompile Include="Sources\Lexer\Test_Corpus.cpp" />
     <ClCompile Include="Sources\Lexer\Test_HolyCSpecifics.cpp" />
     <ClCompile Include="Sources\Lexer\Test_Lexer.cpp" />
     <ClCompile Include="Sources\Core\Test_Milestone.cpp" />
     <ClCompile Include="Sources\Core\Test_Platform.cpp" />
     <ClCompile Include="Sources\Core\Test_SourceManager.cpp" />
     <ClCompile Include="Sources\Core\Test_StringInterner.cpp" />
+    <ClCompile Include="Sources\Lexer\Test_LexerGoldens.cpp" />
     <ClCompile Include="Sources\Lexer\Test_Literals.cpp" />
     <ClCompile Include="Sources\Lexer\Test_Token.cpp" />
     <ClCompile Include="Sources\Runner.cpp" />
@@ -172,11 +174,21 @@
     <ClInclude Include="Include\HolyTest\Core\Golden.h" />
     <ClInclude Include="Include\HolyTest\Core\TestHarness.h" />
     <ClInclude Include="Include\HolyTest\Lexer\LexTestUtil.h" />
+    <ClInclude Include="Include\HolyTest\Lexer\TokenDump.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Sources\Core\Bad.diag.golden" />
     <None Include="Sources\Core\Bad.diag.golden.actual" />
     <None Include="Sources\Core\Bad.HC" />
+    <None Include="Sources\Lexer\AsmBlock.HC" />
+    <None Include="Sources\Lexer\Directives.HC" />
+    <None Include="Sources\Lexer\Error.HC" />
+    <None Include="Sources\Lexer\Hello.HC" />
+    <None Include="Sources\Lexer\Literals.HC" />
+    <None Include="Sources\Lexer\Operators.HC" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Sources\Lexer\corpus_skip.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

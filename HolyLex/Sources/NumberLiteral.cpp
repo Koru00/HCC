@@ -134,14 +134,24 @@ namespace holy::lex {
 
 		numEnd = m_pos;
 		// Suffix check
-		if (!reported) {
-			if (IsIdentStart(Peek())) {
-				size_t suffixStart = m_pos;
-				while (IsIdentChar(Peek())) {
-					m_pos++;
-				}
+		if (IsIdentStart(Peek())) {
+			size_t suffixStart = m_pos;
+			while (IsIdentChar(Peek())) {
+				m_pos++;
+			}
 
-				m_diags.Report(Severity::Error, LocAt(suffixStart), "invalid suffix '" + std::string(m_src.substr(suffixStart, m_pos - suffixStart)) + "' on numeric literal");
+			std::string_view suffix = m_src.substr(suffixStart, m_pos - suffixStart);
+			if (!isFloat && suffix == "K") {
+				value *= 1024;
+			}
+			else if (!isFloat && suffix == "Meg") {
+				value *= 1024 * 1024;
+			}
+			else if (!isFloat && suffix == "Gig") {
+				value *= 1024 * 1024 * 1024;
+			}
+			else if (!reported && (isFloat || (suffix != "l" && suffix != "L"))) {
+				m_diags.Report(Severity::Error, LocAt(suffixStart), "invalid suffix '" + std::string(suffix) + "' on numeric literal");
 			}
 		}
 

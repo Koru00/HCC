@@ -36,6 +36,8 @@
 	X(Tilde, "~") \
     X(Question, "?") \
     X(Equal, "=") \
+	X(Dollar, "$") \
+	X(At, "@") \
 	/* Two-character operators */ \
 	X(PlusPlus, "++") \
 	X(MinusMinus, "--") \

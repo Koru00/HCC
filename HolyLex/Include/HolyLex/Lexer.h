@@ -12,12 +12,17 @@
 #include <string_view>
 
 namespace holy::lex {
+	struct LexerOptions {
+		bool nulTerminatesSource = false;
+	};
+
 	class Lexer {
 	public:
 		static constexpr bool kBlockCommentsNest = false;
 
 		Lexer(core::Arena& arena, const core::SourceManager& sources, core::DiagEngine& diags,
-			core::StringInterner& interner, const KeywordTable& keywords, core::FileId file);
+			core::StringInterner& interner, const KeywordTable& keywords, core::FileId file,
+			LexerOptions options = {});
 
 		Lexer(const Lexer&) = delete;
 		Lexer& operator=(const Lexer&) = delete;
@@ -33,6 +38,7 @@ namespace holy::lex {
 
 	private:
 		void SkipTrivia(); // whitespace and comments
+		bool SkipLineSplice();
 		void SkipBlockComment(); // m_pos is at "/*"; reports "unterminated block comment" if needed
 		Token LexIdentifierOrKeyword(); // m_pos is at an identifier start
 		bool TryLexPunctuator(Token& out); // longest match; false (and no movement) if none
@@ -48,7 +54,7 @@ namespace holy::lex {
 		[[nodiscard]] core::SourceLoc LocAt(size_t offset) const; // offset must be <= file size
 		[[nodiscard]] Token MakeToken(TokenKind kind, size_t start, size_t end); // kind, loc, and text only
 
-		bool m_newlineSeen;
+		bool m_newlineSeen = false;
 		core::Arena& m_arena;
 		const core::SourceManager& m_sources;
 		core::DiagEngine& m_diags;
@@ -57,10 +63,15 @@ namespace holy::lex {
 		core::FileId m_file;
 		std::string_view m_src;
 		size_t m_pos = 0;
+		size_t m_end = 0;
 	};
 }
 
 namespace holy::lex::detail {
+	constexpr bool IsExtendedIdentStart(unsigned char c) {
+		return c >= 0x80;
+	}
+
 	constexpr bool IsIdentStart(char c) {
 		if (c >= 'a' && c <= 'z') {
 			return true;
@@ -72,7 +83,7 @@ namespace holy::lex::detail {
 			return true;
 		}
 
-		return false;
+		return IsExtendedIdentStart(static_cast<unsigned char>(c));
 	}
 
 	constexpr bool IsIdentChar(char c) {

@@ -30,6 +30,17 @@ TEST(Literal_HexAndBinary) {
 	CHECK(tokens[6].intValue == UINT64_MAX);
 }
 
+TEST(Literal_HolyCIntegerSuffix) {
+	Fixture fx;
+	std::vector<Token> tokens = LexAll(fx, "0x8000000000000000l 0xFFFFFFFFl");
+	CHECK(tokens[0].kind == TokenKind::IntLiteral);
+	CHECK(tokens[0].intValue == 0x8000000000000000ull);
+	CHECK(tokens[1].kind == TokenKind::IntLiteral);
+	CHECK(tokens[1].intValue == 0xFFFFFFFFull);
+	CHECK(tokens[2].kind == TokenKind::Eof);
+	CHECK(fx.diags.Count() == 0);
+}
+
 TEST(Literal_IntegerErrors) {
 	Fixture fxCase1;
 	std::vector<Token> tokens = LexAll(fxCase1, "18446744073709551616");
@@ -192,7 +203,7 @@ TEST(Literal_CharErrors) {
 	std::vector<Token> tokens = LexAll(fxCase1, "''");
 	CHECK(tokens[0].kind == TokenKind::CharLiteral);
 	CHECK(tokens[0].intValue == 0);
-	CHECK(fxCase1.diags.All()[0].message == "empty character constant");
+	CHECK(fxCase1.diags.Count() == 0);
 	Fixture fxCase2;
 	tokens = LexAll(fxCase2, "'ABCDEFGHI'");
 	CHECK(tokens[0].kind == TokenKind::CharLiteral);
