@@ -146,6 +146,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Ast\Test_AstPrinter.cpp" />
     <ClCompile Include="Sources\Core\Test_Arena.cpp" />
     <ClCompile Include="Sources\Core\Test_Diagnostics.cpp" />
     <ClCompile Include="Sources\Lexer\Test_Corpus.cpp" />

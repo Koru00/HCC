@@ -60,6 +60,9 @@
     <ClCompile Include="Sources\Lexer\Test_Corpus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sources\Ast\Test_AstPrinter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\HolyTest\Core\TestHarness.h">

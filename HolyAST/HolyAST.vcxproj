@@ -19,12 +19,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Sources\AstPrinter.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\HolyLex\HolyLex.vcxproj">
       <Project>{803ecb70-d480-469b-b7ec-d2427184688a}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Include\HolyAST\AstPrinter.h" />
+    <ClInclude Include="Include\HolyAST\Decl.h" />
+    <ClInclude Include="Include\HolyAST\Expr.h" />
+    <ClInclude Include="Include\HolyAST\Stmt.h" />
+    <ClInclude Include="Include\HolyAST\Type.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Sources\AstPrinter.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>

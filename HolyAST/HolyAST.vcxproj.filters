@@ -15,6 +15,23 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\HolyAST\AstPrinter.h">
+      <Filter>Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\HolyAST\Type.h">
+      <Filter>Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\HolyAST\Expr.h">
+      <Filter>Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\HolyAST\Stmt.h">
+      <Filter>Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\HolyAST\Decl.h">
+      <Filter>Includes</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="Sources\AstPrinter.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
